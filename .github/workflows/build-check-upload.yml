@@ -1,0 +1,38 @@
+name: build & check the application
+on:
+  push:
+    branches:
+      - ci
+jobs:
+  ubuntu-build:
+    runs-on: ubuntu-latest
+    steps:
+      #---Install prerequisites---#
+      - name: install prerequisites
+        run: |
+          sudo apt-get -qqy update
+          sudo apt-get -qqy install mingw-w64
+
+      #---Checkout current repository---#
+      - name: checkout
+        uses: actions/checkout@v2
+
+      #---Checkout dependencies---#
+      - name: checkout gmp
+        uses: actions/checkout@v2
+        with:
+          repository: cedric84/gmp
+          path: gmp
+
+      #---Build---#
+      - name: build
+        run: |
+          python3 ./gmp/build.py github-linux
+          python3 ./build.py github-linux
+
+      #---Upload---#
+      - name: upload
+        uses: actions/upload-artifact@v1
+        with:
+          name: github-linux-out
+          path: ./install
