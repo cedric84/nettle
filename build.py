@@ -35,6 +35,8 @@ class host_t:
 			"--disable-mini-gmp",
 			"--enable-x86-aesni",
 			"--enable-x86-sha-ni",
+			"--with-include-path=" + str(install_pfx.joinpath("include")),
+			"--with-lib-path=" + str(install_pfx.joinpath("lib")),
 			*args
 		)
 
